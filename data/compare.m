@@ -1,0 +1,1 @@
+report = bxb('pruebas/100','atr','csv','bxbReport2.txt')

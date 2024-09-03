@@ -1,0 +1,22 @@
+Beat-by-beat comparison results for record pruebas/100
+Reference annotator: atr
+     Test annotator: csv
+
+               Algorithm
+        n    s    v    f    q    o    x
+   ____________________________________
+ N |    1    4    0    0    3   40    0
+ S |   17   13    0    0   30  627    0
+ V |    0    0    0    0    0    0    0
+ F |    0    0    0    0    0    0    0
+ Q |   30   46    0    0   90 1709    0
+ O |  419  531    0    0 1117
+ X |    0    0    0    0    0
+
+           QRS sensitivity:   8.97% (234/2610)
+ QRS positive predictivity:  10.17% (234/2301)
+           VEB sensitivity:      -  (0/0)
+ VEB positive predictivity:      -  (0/0)
+          SVEB sensitivity:   1.89% (13/687)
+SVEB positive predictivity:   2.37% (13/548)
+     RMS RR interval error: 4189.92 ms

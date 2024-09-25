@@ -6,7 +6,6 @@ read_signal = function(file, signal_col = 1, has_head = FALSE) {
   } else if (ext == "dat") { # ----> Doesn't read data correctly
     # For .dat files, assuming binary data and little-endian 16-bit integers
     # Header details 100.hea
-    num_signals = 3
     sampling_rate = 360
     nsamples = 650000
     nsignals = 2

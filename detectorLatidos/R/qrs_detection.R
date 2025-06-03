@@ -1,7 +1,5 @@
 # QRS detection on a single-channel ECG signal
-qrs_detection = function(signal_data, threshold = 200, from_time = 0, to_time = Inf, output = "record_annotations.csv") {
-  spm = 60
-  next_minute = from_time + spm
+qrs_detection = function(signal_data, threshold = 200, from_sample = 0, to_sample = Inf, output = "record_annotations.csv") {
   scmin = threshold
   scmax = 10 * scmin
   slopecrit = scmax
@@ -19,7 +17,7 @@ qrs_detection = function(signal_data, threshold = 200, from_time = 0, to_time = 
   maxslope = 0
   time = 0
   minutes = 0
-  now = from_time
+  now = from_sample
   t_values = numeric(10)   # Buffer for signal values
 
   # Prepare to store annotations
@@ -85,20 +83,7 @@ qrs_detection = function(signal_data, threshold = 200, from_time = 0, to_time = 
     time = time + 1
     now = now + 1
 
-    if (now >= next_minute) {
-      next_minute = next_minute + spm
-
-      # cat(".", append = TRUE)  # Print a dot to indicate progress
-      # flush.console()          # Ensure the output is flushed to the console
-
-      # Increment minutes and check if it has reached 60
-      minutes = minutes + 1
-      if (minutes >= 60) {
-        cat(" ----", now, "\n")  # Print the formatted time
-        minutes = 0  # Reset minutes
-      }
-    }
-    if (now >= to_time) {
+    if (now >= to_sample) {
       break
     }
   }

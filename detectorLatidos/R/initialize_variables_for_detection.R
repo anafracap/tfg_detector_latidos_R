@@ -10,7 +10,7 @@ initialize_variables_for_detection = function(threshold, from_sample, slope_crit
     filter = 0,
     num_slope = 0,
     max_slope = 0,
-    sample_for_slopes = 0,
+    sample_num_for_slopes = 0,
     # Prepare to store annotations
     annotations = data.frame(sample = numeric(0), type = character(0))
   ))

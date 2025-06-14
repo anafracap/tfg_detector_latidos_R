@@ -3,10 +3,10 @@ adjust_slope_criteria = function (sample_num_for_slopes, samples_per_2s, num_slo
   if (sample_num_for_slopes %% samples_per_2s == 0){
     if (num_slope == 0){
       slope_crit = slope_crit - slope_crit %/% 16
-      return(slope_crit)
+      if (slope_crit < slope_crit_min){
+        slope_crit = slope_crit_min
+      }
     }
-  }else {
-    return(slope_crit)
   }
-
+  return(slope_crit)
 }

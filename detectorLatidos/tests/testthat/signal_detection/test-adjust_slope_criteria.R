@@ -40,3 +40,21 @@ test_that("If 2 seconds passed, and no slope change detected", {
       slope_crit_max = constants$slope_crit_ma),
     expected)
 })
+
+test_that("If 2 seconds passed, and no slope change detected, but criteria under lower bounds", {
+  slope_crit = constants$slope_crit_min - 10
+  num_slope = 0
+  sample_num_for_slopes = 2*constants$sampling_rate
+
+  expected = constants$slope_crit_min
+
+  expect_equal(
+    adjust_slope_criteria(
+      sample_num_for_slopes = sample_num_for_slopes,
+      samples_per_2s = constants$samples_per_2s,
+      num_slope = num_slope,
+      slope_crit = slope_crit,
+      slope_crit_min = constants$slope_crit_min,
+      slope_crit_max = constants$slope_crit_ma),
+    expected)
+})

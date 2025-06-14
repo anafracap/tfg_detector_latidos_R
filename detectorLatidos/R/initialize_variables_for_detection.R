@@ -2,16 +2,16 @@ initialize_variables_for_detection = function(threshold, from_sample, slope_crit
   return (list(
     slope_crit = slope_crit_max,
 
-    now = from_sample,
+    current_sample_number = from_sample,
     next_minute = from_sample + 60,
     minutes = 0,
     t_values_buffer = numeric(10),  # Buffer for signal values
 
     filter = 0,
-    nslope = 0,
-    maxslope = 0,
-    time = 0,
+    num_slope = 0,
+    max_slope = 0,
+    sample_for_slopes = 0,
     # Prepare to store annotations
-    annotations = data.frame(time = numeric(0), type = character(0))
+    annotations = data.frame(sample = numeric(0), type = character(0))
   ))
 }

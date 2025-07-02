@@ -2,7 +2,8 @@
 % Please edit documentation in R/qrs_detection.R
 \name{qrs_detection}
 \alias{qrs_detection}
-\title{QRS detection on a single-channel ECG signal.}
+\title{QRS detection on a single-channel ECG signal. This algorithm uses slope changes to
+detect QRS complexes, and is based on the SQRS tool from the WFDB toolkit.}
 \usage{
 qrs_detection(
   signal_data,
@@ -27,5 +28,6 @@ qrs_detection(
 Dataframe with the annotated heartbeats. The reference is in sample numbers
 }
 \description{
-QRS detection on a single-channel ECG signal.
+QRS detection on a single-channel ECG signal. This algorithm uses slope changes to
+detect QRS complexes, and is based on the SQRS tool from the WFDB toolkit.
 }

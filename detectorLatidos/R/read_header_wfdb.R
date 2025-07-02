@@ -5,6 +5,7 @@
 #'
 #' @return A list containing two other lists with different information on the signals of the record, either general or specific per sample.
 #'
+#' @export
 read_header_wfdb = function (hea_file){
   header_lines = readLines(hea_file)
 

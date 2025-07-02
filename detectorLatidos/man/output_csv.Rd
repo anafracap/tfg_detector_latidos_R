@@ -4,7 +4,12 @@
 \alias{output_csv}
 \title{Generates a .csv file with the annotations.}
 \usage{
-output_csv(annotations, file = "./output")
+output_csv(annotations, file = "./output.csv")
+}
+\arguments{
+\item{annotations}{dataframe containing the detected heartbeats and their annotations}
+
+\item{file}{full file path and name.}
 }
 \description{
 Generates a .csv file with the annotations.

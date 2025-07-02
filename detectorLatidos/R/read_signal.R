@@ -7,6 +7,7 @@
 #'
 #' @return signal data for 2 signals, returned as a dataframe
 #'
+#' @export
 read_signal = function(file, signal_col = 1, has_head = FALSE, header_dat = NULL) {
   ext = tools::file_ext(file)  # Get the file extension
   if (ext == "csv") {

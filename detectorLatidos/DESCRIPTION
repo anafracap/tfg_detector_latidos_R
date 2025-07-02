@@ -1,0 +1,20 @@
+Package: heartbeatDetector
+Title: QRS Complex Detection for Single-Channel Signals
+Version: 0.0.0
+Authors@R: 
+    person("Ana", "Fraile", , "ana.frailecaparros@usp.ceu.es", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Implements a slope-based algorithm for detecting QRS complexes in a 
+    single-channel ECG signal. The algorithm is based on the SQRS detector from 
+    the WFDB toolkit. The original SQRS algorithm was based on the work of Engelse 
+    and Zeelenberg, “A single scan algorithm for QRS detection and feature extraction,” 
+    Computers in Cardiology, 1979.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests: 
+    testthat (>= 3.0.0),
+    usethis,
+    roxygen2
+Config/testthat/edition: 3

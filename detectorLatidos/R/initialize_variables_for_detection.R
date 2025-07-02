@@ -5,13 +5,16 @@ initialize_variables_for_detection = function(threshold, from_sample, slope_crit
     current_sample_number = from_sample,
     next_minute = from_sample + 60,
     minutes = 0,
-    t_values_buffer = numeric(10),  # Buffer for signal values
+    t_values = numeric(10),  # Buffer for signal values
 
-    filter = 0,
+    filter = NULL,
     num_slope = 0,
-    max_slope = 0,
-    sample_num_for_slopes = 0,
+    sign = NULL,
+    max_slope_detected = 0,
+    samples_since_qrs_start = 0,
+    first_sample_of_qrs_complex = NULL,
+    detection_window_countdown = NULL,
     # Prepare to store annotations
-    annotations = data.frame(sample = numeric(0), type = character(0))
+    annotations = data.frame(sample_number = numeric(0), type = character(0))
   ))
 }

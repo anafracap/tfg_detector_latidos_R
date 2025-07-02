@@ -1,94 +1,68 @@
 # QRS detection on a single-channel ECG signal
-qrs_detection = function(signal_data, threshold = 200, from_sample = 0, to_sample = Inf, output = "record_annotations.csv") {
-  scmin = threshold
-  scmax = 10 * scmin
-  slopecrit = scmax
+qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from_sample = 0, to_sample = Inf, output = "record_annotations.csv") {
 
-  sampling_rate = 360
+  constants = list (
+    slope_crit_min = threshold,
+    slope_crit_max = threshold * 10,
+    sampling_rate = sampling_rate,
 
-  # Timing constants (adjustable for pediatric/small mammal ECGs) transforms milliseconds to samples
-  samples_for_160ms = 0.16 * sampling_rate
-  samples_for_200ms = 0.2 * sampling_rate
-  samples_for_2s = 2 * sampling_rate
+    # Timing constants (adjustable for pediatric/small mammal ECGs) transforms milliseconds to samples
+    samples_per_160ms = as.integer(round(0.16 * sampling_rate)),
+    samples_per_200ms = as.integer(round(0.2 * sampling_rate)),
+    samples_per_2s = as.integer(round(2 * sampling_rate))
+  )
 
-  # Initialize variables
-  filter = 0
-  nslope = 0
-  maxslope = 0
-  time = 0
-  minutes = 0
-  now = from_sample
-  t_values = numeric(10)   # Buffer for signal values
-
-  # Prepare to store annotations
-  annotations = data.frame(time = numeric(0), type = character(0))
+  variables = initialize_variables_for_detection(threshold, from_sample, constants$slope_crit_max)
 
   # Process the signal
   for (v in signal_data) {
-    t_values[1] = v
-    filter = t_values[1] + 4 * t_values[2] + 6 * t_values[3] + 4 * t_values[4] + t_values[5] -
-      t_values[6] - 4 * t_values[7] - 6 * t_values[8] - 4 * t_values[9] - t_values[10]
+    variables$t_values[1] = v
+    variables$filter = sum( c(1,4,6,4,1,-1,-4,-6,-4,-1) * variables$t_values )
 
-    # Adjust criteria
-    if (time %% samples_for_2s == 0) {
-      if (nslope == 0) {
-        slopecrit = slopecrit - (slopecrit %/% 16)
-        if (slopecrit < scmin) {
-          slopecrit = scmin
-        }
-      } else if (nslope >= 5) {
-        slopecrit = slopecrit + (slopecrit %/% 16)
-        if (slopecrit > scmax) slopecrit = scmax
-      }
-    }
 
-    # First slope
-    if (nslope == 0 && abs(filter) > slopecrit) {
-      nslope = 1
-      maxtime = samples_for_160ms
-      sign = ifelse(filter > 0, 1, -1)
-      qtime = time
-    }
+    variables$slope_crit = adjust_slope_criteria(
+      samples_since_qrs_start = variables$samples_since_qrs_start,
+      samples_per_2s = constants$samples_per_2s,
+      num_slope = variables$num_slope,
+      slope_crit = variables$slope_crit,
+      slope_crit_min = constants$slope_crit_min,
+      slope_crit_max = constants$slope_crit_max
+    )
 
-    if (nslope != 0) {
-      if (filter * sign < -slopecrit) {
-        sign = -sign
-        nslope = nslope + 1
-        maxtime = ifelse(nslope > 4, samples_for_200ms, samples_for_160ms)
-      } else if (filter * sign > slopecrit && abs(filter) > maxslope) {
-        maxslope = abs(filter)
-      }
+    detection_results = slope_detection(constants = constants,
+                                        num_slope = variables$num_slope,
+                                        filter = variables$filter,
+                                        slope_crit = variables$slope_crit,
+                                        detection_window_countdown = variables$detection_window_countdown,
+                                        sign = variables$sign,
+                                        samples_since_qrs_start = variables$samples_since_qrs_start,
+                                        first_sample_of_qrs_complex = variables$first_sample_of_qrs_complex,
+                                        max_slope_detected = variables$max_slope_detected,
+                                        annotations = variables$annotations,
+                                        current_sample_number = variables$current_sample_number)
 
-      if (maxtime < 0) {
-        if (2 <= nslope && nslope <= 4) {
-          slopecrit = slopecrit + ((maxslope %/% 4) - slopecrit) %/% 8
-          if (slopecrit < scmin) {
-            slopecrit = scmin
-          } else if (slopecrit > scmax) {
-            slopecrit = scmax
-          }
+    variables$num_slope = detection_results$num_slope
+    variables$filter = detection_results$filter
+    variables$slope_crit = detection_results$slope_crit
+    variables$detection_window_countdown = detection_results$detection_window_countdown
+    variables$sign = detection_results$sign
+    variables$first_sample_of_qrs_complex = detection_results$first_sample_of_qrs_complex
+    variables$samples_since_qrs_start = detection_results$samples_since_qrs_start
+    variables$max_slope_detected = detection_results$max_slope_detected
+    variables$annotations = detection_results$annotations
 
-          annotations = rbind(annotations, data.frame(time = now - (time - qtime) - 4, type = "NORMAL"))
-          time = 0
-        } else if (nslope >= 5) {
-          annotations = rbind(annotations, data.frame(time = now - (time - qtime) - 4, type = "ARFCT"))
-        }
-        nslope = 0
-      }
-      maxtime = maxtime - 1
-    }
+
+
 
     # Update the buffer and time
-    t_values = c(0, t_values[1:9])
-    time = time + 1
-    now = now + 1
+    variables$t_values = c(0, variables$t_values[1:9])
+    variables$samples_since_qrs_start = variables$samples_since_qrs_start + 1
+    variables$current_sample_number = variables$current_sample_number + 1
 
-    if (now >= to_sample) {
+    if (variables$current_sample_number >= to_sample) {
       break
     }
   }
 
-  # Write the annotations to a file
-  #write_annotations(annotations, output)
-  return(annotations)
+  return(variables$annotations)
 }

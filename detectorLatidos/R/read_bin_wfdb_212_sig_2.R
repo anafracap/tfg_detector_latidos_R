@@ -1,5 +1,11 @@
-# Read binary .dat file with format 212, containing 2 alternating
-# signal samples.
+#' Internal function which reads a binary .dat file with format 212, containing
+#' 2 alternating signal samples.
+#'
+#' @param file Full name of the .dat file.
+#' @param num_samples Number of samples contained in the file for a single signal.
+#'
+#' @return A dataframe with the two signals, signal_1 and signal_2
+#'
 read_bin_wfdb_212_sig_2 = function(file, num_samples){
   bytes_per_signal = num_samples * 1.5
   num_signals = 2

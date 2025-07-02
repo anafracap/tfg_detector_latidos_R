@@ -1,5 +1,13 @@
-# QRS detection on a single-channel ECG signal
-qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from_sample = 0, to_sample = Inf, output = "record_annotations.csv") {
+#' QRS detection on a single-channel ECG signal.
+#'
+#' @param signal_data dataframe with the single-channel signal to be analyzed.
+#' @param sampling_rate samples per second recorded.
+#' @param threshold threshold to be applied to the filterd signal in order to consider it beign a slope change
+#' @param from_sample start of the qrs detection in samples.
+#' @param to_sample end of the qrs detection in samples.
+#'
+#' @return Dataframe with the annotated heartbeats. The reference is in sample numbers
+qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from_sample = 0, to_sample = Inf) {
 
   constants = list (
     slope_crit_min = threshold,
@@ -14,8 +22,10 @@ qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from
 
   variables = initialize_variables_for_detection(threshold, from_sample, constants$slope_crit_max)
 
+  signal_data_subset = signal_data[ (from_sample + 1) : length(signal_data)]
+
   # Process the signal
-  for (v in signal_data) {
+  for (v in signal_data_subset) {
     variables$t_values[1] = v
     variables$filter = sum( c(1,4,6,4,1,-1,-4,-6,-4,-1) * variables$t_values )
 

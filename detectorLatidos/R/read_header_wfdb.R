@@ -1,3 +1,10 @@
+#' Parses a wfdb header file, which usually uses the extension .hea. It assumes
+#' a certain structure for these files
+#'
+#' @param hea_file Full name of the file containing header information.
+#'
+#' @return A list containing two other lists with different information on the signals of the record, either general or specific per sample.
+#'
 read_header_wfdb = function (hea_file){
   header_lines = readLines(hea_file)
 

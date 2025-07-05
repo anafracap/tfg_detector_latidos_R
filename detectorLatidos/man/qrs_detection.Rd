@@ -14,7 +14,7 @@ qrs_detection(
 )
 }
 \arguments{
-\item{signal_data}{dataframe with the single-channel signal to be analyzed.}
+\item{signal_data}{dataframe or list with the single-channel signal to be analyzed.}
 
 \item{sampling_rate}{samples per second recorded.}
 

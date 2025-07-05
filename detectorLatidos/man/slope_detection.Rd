@@ -2,7 +2,7 @@
 % Please edit documentation in R/slope_detection.R
 \name{slope_detection}
 \alias{slope_detection}
-\title{Internal function contaning the logic for the slope changes detection and the
+\title{Internal function containing the logic for the slope changes detection and the
 annotation of the possible heartbeats.}
 \usage{
 slope_detection(
@@ -46,6 +46,6 @@ slope_detection(
 list with the variables modified in this function: num_slope, slope_crit, detection_window_countdown, sign, first_sample_of_qrs_complex, max_slope_detecte and annotations.
 }
 \description{
-Internal function contaning the logic for the slope changes detection and the
+Internal function containing the logic for the slope changes detection and the
 annotation of the possible heartbeats.
 }

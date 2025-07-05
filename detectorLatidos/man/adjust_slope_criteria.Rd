@@ -7,12 +7,14 @@ threshold every two seconds since the end of the previous qrs complex detected
 when either to many or none slope changes are detected.}
 \usage{
 adjust_slope_criteria(
-  samples_since_qrs_start,
-  samples_per_2s,
-  num_slope,
+  samples_since_qrs_start = NULL,
+  samples_per_2s = NULL,
+  num_slope = NULL,
   slope_crit,
   slope_crit_min,
-  slope_crit_max
+  slope_crit_max,
+  mid_detection_check = FALSE,
+  max_slope_detected = NULL
 )
 }
 \arguments{

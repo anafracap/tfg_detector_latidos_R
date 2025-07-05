@@ -1,4 +1,4 @@
-#' Internal function contaning the logic for the slope changes detection and the
+#' Internal function containing the logic for the slope changes detection and the
 #' annotation of the possible heartbeats.
 #'
 #' @param constants list containing the constants involved in the slope detection
@@ -42,9 +42,9 @@ slope_detection = function (constants, num_slope, filter, slope_crit,
 
     if (detection_window_countdown < 0) {
       if (2 <= num_slope && num_slope <= 4) {
-        slope_crit = slope_crit + ((max_slope_detected %/% 4) - slope_crit) %/% 8
-
-        slope_crit = min (max (slope_crit, constants$slope_crit_min), constants$slope_crit_max)
+        slope_crit = adjust_slope_criteria(slope_crit = slope_crit, slope_crit_max = constants$slope_crit_max,
+                                           slope_crit_min = constants$slope_crit_min,
+                                           mid_detection_check = TRUE, max_slope_detected = max_slope_detected)
 
         annotations = rbind(annotations, data.frame(sample_number = current_sample_number - (samples_since_qrs_start - first_sample_of_qrs_complex) , type = "NORMAL"))
 

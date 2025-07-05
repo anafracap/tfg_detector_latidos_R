@@ -64,7 +64,12 @@ qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from
 
   variables = initialize_variables_for_detection(threshold, from_sample, constants$slope_crit_max)
 
-  signal_data_subset = signal_data[ (from_sample + 1) : length(signal_data)]
+  if (to_sample != Inf){
+    signal_data_subset = signal_data[ (from_sample + 1) : (to_sample + 1)]
+  }else {
+    signal_data_subset = signal_data[ (from_sample + 1) : length(signal_data)]
+  }
+
 
   # Process the signal
   for (v in signal_data_subset) {
@@ -110,10 +115,6 @@ qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from
     variables$t_values = c(0, variables$t_values[1:9])
     variables$samples_since_qrs_start = variables$samples_since_qrs_start + 1
     variables$current_sample_number = variables$current_sample_number + 1
-
-    if (variables$current_sample_number >= to_sample) {
-      break
-    }
   }
 
   return(variables$annotations)

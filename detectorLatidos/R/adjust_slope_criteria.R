@@ -11,16 +11,23 @@
 #'
 #' @return New value for the slope criteria
 
-adjust_slope_criteria = function (samples_since_qrs_start, samples_per_2s, num_slope,
-                                  slope_crit, slope_crit_min, slope_crit_max) {
+adjust_slope_criteria = function (samples_since_qrs_start = NULL, samples_per_2s = NULL,
+                                  num_slope = NULL, slope_crit, slope_crit_min,
+                                  slope_crit_max, mid_detection_check = FALSE,
+                                  max_slope_detected = NULL) {
 
-  if (samples_since_qrs_start %% samples_per_2s == 0){
-    if (num_slope == 0){
-      slope_crit = max (slope_crit_min, slope_crit - slope_crit %/% 16)
+  if(!mid_detection_check){
+    if (samples_since_qrs_start %% samples_per_2s == 0){
+      if (num_slope == 0){
+        slope_crit = slope_crit - slope_crit %/% 16
 
-    } else if (num_slope >=5){
-      slope_crit = min (slope_crit_max, slope_crit + slope_crit %/% 16)
+      } else if (num_slope >=5){
+        slope_crit = slope_crit + slope_crit %/% 16
+      }
     }
+  } else {
+    slope_crit = slope_crit + ((max_slope_detected %/% 4) - slope_crit) %/% 8
   }
-  return(slope_crit)
+
+  return( min (max (slope_crit, slope_crit_min), slope_crit_max))
 }

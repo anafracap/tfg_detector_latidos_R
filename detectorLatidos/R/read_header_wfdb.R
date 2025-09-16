@@ -6,8 +6,12 @@
 #' @return A list containing two other lists with different information on the signals of the record, either general or specific per sample.
 #'
 #' @export
-read_header_wfdb = function (hea_file){
+read_header_wfdb = function (hea_file, verbose = FALSE){
   header_lines = readLines(hea_file)
+
+  if(verbose){
+    cat("Parsing ", length(header_lines), " lines. \n")
+  }
 
   general_information = strsplit(header_lines[1], " ")[[1]]
   num_signals = as.integer(general_information[2])
@@ -53,6 +57,11 @@ read_header_wfdb = function (hea_file){
     block_size = block_size,
     lead_name = lead_name
   )
+
+  if(verbose){
+    cat("This is the information contained:\n")
+    print(list(general = general, per_sample = per_sample))
+  }
 
   return(list(general = general, per_sample = per_sample))
 

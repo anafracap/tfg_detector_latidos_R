@@ -10,7 +10,7 @@
 #' @return Dataframe with the annotated heartbeats. The reference is in sample numbers
 #'
 #' @export
-qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from_sample = 0, to_sample = Inf) {
+qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from_sample = 0, to_sample = Inf, verbose = FALSE) {
 
   if (is.data.frame(signal_data)) {
     signal_column = signal_data[[1]]
@@ -70,6 +70,9 @@ qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from
     signal_data_subset = signal_data[ (from_sample + 1) : length(signal_data)]
   }
 
+  if(verbose){
+    cat("Starting the QRS detection for ", length(signal_data_subset), " samples. \n")
+  }
 
   # Process the signal
   for (v in signal_data_subset) {
@@ -115,6 +118,10 @@ qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from
     variables$t_values = c(0, variables$t_values[1:9])
     variables$samples_since_qrs_start = variables$samples_since_qrs_start + 1
     variables$current_sample_number = variables$current_sample_number + 1
+  }
+
+  if(verbose){
+    cat(length(variables$annotations), " QRS complexes detected.  \n")
   }
 
   return(variables$annotations)

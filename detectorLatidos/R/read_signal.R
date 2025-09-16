@@ -8,13 +8,22 @@
 #' @return signal data for 2 signals, returned as a dataframe
 #'
 #' @export
-read_signal = function(file, signal_col = 1, has_head = FALSE, header_dat = NULL) {
+read_signal = function(file, signal_col = 1, has_head = FALSE, header_dat = NULL, verbose = FALSE) {
   ext = tools::file_ext(file)  # Get the file extension
+
+  if(verbose){
+    cat("Trying to read a(n) ", ext, " file \n")
+  }
+
   if (ext == "csv") {
     data = read.csv(file, header = has_head)
-    signal_data = data[, c(signal_col, signal_col + 1)] #first column is sample numer
 
+    signal_data = data[, c(signal_col, signal_col + 1)] #first column is sample number
     colnames(signal_data) <- c("signal_1", "signal_2")
+
+    if(verbose){
+      cat("Read ", nrow(signal_data), " samples. \n")
+    }
 
     return(signal_data)
 
@@ -26,6 +35,10 @@ read_signal = function(file, signal_col = 1, has_head = FALSE, header_dat = NULL
       signal_data = read_bin_wfdb_212_sig_2(file = file, num_samples = num_samples)
     } else {
       stop("Unsupported number of signals contained in wfdb file: ", header_dat$general$num_signals)
+    }
+
+    if(verbose){
+      cat("Read ", nrow(signal_data), " samples. \n")
     }
 
     return(signal_data)

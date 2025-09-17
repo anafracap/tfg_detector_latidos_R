@@ -5,7 +5,7 @@
 \title{Parses a wfdb header file, which usually uses the extension .hea. It assumes
 a certain structure for these files}
 \usage{
-read_header_wfdb(hea_file)
+read_header_wfdb(hea_file, verbose = FALSE)
 }
 \arguments{
 \item{hea_file}{Full name of the file containing header information.}

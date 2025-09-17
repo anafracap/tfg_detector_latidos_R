@@ -4,7 +4,13 @@
 \alias{read_signal}
 \title{Reads a file containing ECG signal data}
 \usage{
-read_signal(file, signal_col = 1, has_head = FALSE, header_dat = NULL)
+read_signal(
+  file,
+  signal_col = 1,
+  has_head = FALSE,
+  header_dat = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{file}{full file name, including extension.}

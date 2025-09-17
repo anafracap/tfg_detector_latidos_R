@@ -10,7 +10,8 @@ qrs_detection(
   sampling_rate = 360,
   threshold = 200,
   from_sample = 0,
-  to_sample = Inf
+  to_sample = Inf,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,7 @@ qrs_detection(
 Dataframe with the annotated heartbeats. The reference is in sample numbers
 }
 \description{
-QRS detection on a single-channel ECG signal. This algorithm uses slope changes to
-detect QRS complexes, and is based on the SQRS tool from the WFDB toolkit.
+Original reference:
+Moody, G., Pollard, T., & Moody, B. (2022). WFDB Software Package (version 10.7.0).
+PhysioNet. https://doi.org/10.13026/gjvw-1m31`
 }

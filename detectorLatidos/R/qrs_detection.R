@@ -1,6 +1,10 @@
 #' QRS detection on a single-channel ECG signal. This algorithm uses slope changes to
 #' detect QRS complexes, and is based on the SQRS tool from the WFDB toolkit.
 #'
+#' Original reference:
+#' Moody, G., Pollard, T., & Moody, B. (2022). WFDB Software Package (version 10.7.0).
+#' PhysioNet. https://doi.org/10.13026/gjvw-1m31`
+#'
 #' @param signal_data dataframe or list with the single-channel signal to be analyzed.
 #' @param sampling_rate samples per second recorded.
 #' @param threshold threshold to be applied to the filterd signal in order to consider it beign a slope change
@@ -121,7 +125,7 @@ qrs_detection = function(signal_data, sampling_rate = 360, threshold = 200, from
   }
 
   if(verbose){
-    cat(length(variables$annotations), " QRS complexes detected.  \n")
+    cat(nrow(variables$annotations), " QRS complexes detected.  \n")
   }
 
   return(variables$annotations)
